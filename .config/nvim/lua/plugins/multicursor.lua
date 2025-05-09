@@ -7,8 +7,8 @@ return {
 
     local set = vim.keymap.set
 
-    set({"n", "x"}, "<C-S-Up>", function() mc.lineAddCursor(-1) end)
-    set({"n", "x"}, "<C-S-Down>", function() mc.lineAddCursor(1) end)
+    set({"n", "i", "x"}, "<C-S-Up>", function() mc.lineAddCursor(-1) end)
+    set({"n", "i", "x"}, "<C-S-Down>", function() mc.lineAddCursor(1) end)
 
     set("n", "<C-LeftMouse>", mc.handleMouse)
     set("n", "<C-LeftDrag>", mc.handleMouseDrag)

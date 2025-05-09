@@ -20,11 +20,6 @@ vim.keymap.set("v", "<S-Left>", "h", { noremap = true })
 vim.keymap.set("n", "<S-Right>", "vl", { noremap = true })
 vim.keymap.set("v", "<S-Right>", "l", { noremap = true })
 
-vim.keymap.set("v", "<Left>", "<Esc>", { noremap = true })
-vim.keymap.set("v", "<Right>", "<Esc>", { noremap = true })
-vim.keymap.set("v", "<Up>", "<Esc>", { noremap = true })
-vim.keymap.set("v", "<Down>", "<Esc>", { noremap = true })
-
 vim.keymap.set("n", "<C-Up>", "<C-e>", { noremap = true })
 vim.keymap.set("n", "<C-Down>", "<C-y>", { noremap = true })
 

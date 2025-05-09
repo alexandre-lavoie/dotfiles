@@ -9,6 +9,8 @@ return {
     "hrsh7th/cmp-buffer",
   },
   config = function ()
+    -- Settings
+
     vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
     local lspkind = require("lspkind")
@@ -33,6 +35,8 @@ return {
         )
       },
     }
+
+    -- Hover
 
     vim.api.nvim_create_autocmd("CursorHold", {
       callback = function()
