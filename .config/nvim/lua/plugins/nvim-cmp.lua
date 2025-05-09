@@ -1,3 +1,5 @@
+local augroup = vim.api.nvim_create_augroup("AutocompleteHover", {})
+
 return {
   "hrsh7th/nvim-cmp",
   lazy = false,
@@ -8,7 +10,7 @@ return {
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-buffer",
   },
-  config = function ()
+  config = function()
     -- Settings
 
     vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -37,11 +39,16 @@ return {
     }
 
     -- Hover
+  
+    vim.api.nvim_clear_autocmds({
+      group = augroup,
+    })
 
     vim.api.nvim_create_autocmd("CursorHold", {
+      group = augroup,
       callback = function()
         vim.lsp.buf.hover()
-      end
+      end,
     })
-  end
+  end,
 }
