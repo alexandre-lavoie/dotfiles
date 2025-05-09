@@ -1,7 +1,7 @@
-.PHONY: build, build-nvim
+.PHONY: package, package-nvim
 
-build: build-nvim
+package: package-nvim
 
-build-nvim:
+package-nvim:
 	rm -rf .config/nvim
 	cp -r ~/.config/nvim .config/nvim
