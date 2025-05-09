@@ -35,17 +35,19 @@ vim.keymap.set("v", "<C-v>", "p", { noremap = true })
 vim.keymap.set("n", "<C-z>", "u", { noremap = true })
 vim.keymap.set("n", "<C-y>", "<C-R>", { noremap = true })
 
-vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", { noremap = true })
+vim.keymap.set("n", "<F2>", function() vim.lsp.buf.rename() end, { noremap = true })
 
 -- Search
 
 vim.keymap.set("n", "<C-f>", "/", { noremap = true })
-vim.keymap.set("n", "<C-S-f>", "<cmd>lua Snacks.picker.grep()<CR>", { noremap = true })
-vim.keymap.set("n", "<C-p>", "<cmd>lua Snacks.picker.files()<CR>", { noremap = true })
-vim.keymap.set("n", "<C-S-o>", "<cmd>lua Snacks.picker.lsp_symbols()<CR>", { noremap = true })
+vim.keymap.set("n", "<C-S-f>", function() Snacks.picker.grep() end, { noremap = ue })
+vim.keymap.set("n", "<C-p>", function() Snacks.picker.files() end, { noremap = true })
+vim.keymap.set("n", "<C-S-o>", function() Snacks.picker.lsp_symbols() end, { noremap = true })
 
 -- Editor
 
+vim.keymap.set("n", "<C-q>", ":q<CR>", { noremap = true })
+vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true })
 vim.keymap.set("n", "<C-S-p>", ":", { noremap = true })
-vim.keymap.set("n", "<C-`>", "<cmd>lua Snacks.terminal.toggle()<CR>", { noremap = true })
-vim.keymap.set("t", "<C-`>", "<cmd>lua Snacks.terminal.toggle()<CR>", { noremap = true })
+vim.keymap.set("n", "<C-`>", function() Snacks.terminal.toggle() end, { noremap = true })
+vim.keymap.set("t", "<C-`>", function() Snacks.terminal.toggle() end, { noremap = true })
