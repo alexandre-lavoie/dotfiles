@@ -5,10 +5,14 @@ return {
     require("nvim-treesitter.configs").setup {
       ensure_installed = {
         "c",
+        "gitignore",
         "go",
+        "json",
         "lua",
         "markdown",
-        "markdown_inline"
+        "markdown_inline",
+        "typescript",
+        "vue",
       },
       auto_install = true,
       highlight = {
