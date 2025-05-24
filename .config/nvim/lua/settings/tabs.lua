@@ -1,4 +1,3 @@
-vim.opt.expandtab = true
 vim.opt.autoindent = true
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -6,9 +5,17 @@ vim.api.nvim_create_autocmd("FileType", {
     local m = args.match
 
     if m == "lua" or m == "json" then
+      vim.opt.expandtab = true
+      vim.opt.tabstop = 1
       vim.opt.shiftwidth = 2
+      vim.opt.softtabstop = 2
+    elseif m == "go" then
+      vim.opt.tabstop = 4
     else
+      vim.opt.expandtab = true
+      vim.opt.tabstop = 1
       vim.opt.shiftwidth = 4
+      vim.opt.softtabstop = 4
     end
   end
 })
