@@ -9,6 +9,8 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.opt.tabstop = 1
       vim.opt.shiftwidth = 2
       vim.opt.softtabstop = 2
+    elseif m == "make" then
+      vim.opt.tabstop = 4
     elseif m == "go" then
       vim.opt.tabstop = 4
     else
