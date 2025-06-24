@@ -1,3 +1,9 @@
 keybind = ctrl+shift+left=unbind
 keybind = ctrl+shift+right=unbind
 keybind = ctrl+shift+o=unbind
+keybind = alt+left=previous_tab
+keybind = alt+right=next_tab
+keybind = alt+t=new_tab
+keybind = alt+q=close_tab
+maximize = true
+

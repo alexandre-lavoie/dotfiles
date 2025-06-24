@@ -7,6 +7,7 @@ return {
         "gopls",
         "json-lsp",
         "lua-language-server",
+        "pyright",
         "typescript-language-server",
         "vue-language-server",
       },
@@ -31,6 +32,7 @@ return {
         }
       })
       vim.lsp.enable("lua_ls")
+      vim.lsp.enable("pyright")
       vim.lsp.config("ts_ls", {
         filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
         init_options = {
