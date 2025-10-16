@@ -4,7 +4,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
     local m = args.match
 
-    if m == "lua" or m == "json" or m == "vue" or m == "yaml" then
+    if m == "lua" or m == "json" or m == "vue" or m == "yaml" or m == "javascript" or m == "typescript" then
       vim.opt.expandtab = true
       vim.opt.tabstop = 1
       vim.opt.shiftwidth = 2
