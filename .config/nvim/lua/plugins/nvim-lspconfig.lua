@@ -16,11 +16,28 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      vim.lsp.enable("clangd")
-      vim.lsp.enable("gopls")
-      vim.lsp.config("json-lsp", {})
-      vim.lsp.enable("json-lsp")
-      vim.lsp.config("lua_ls", {
+      local lspconfig = require("lspconfig")
+
+      lspconfig.clangd.setup({})
+
+      lspconfig.gdscript.setup({
+        cmd = { "ncat", "localhost", "6005" },
+        filetypes = { "gd", "gdscript" },
+        on_attach = function(client, bufnr)
+          vim.api.nvim_command('echo serverstart("/tmp/godot.pipe")')
+        end,
+        root_dir = function(fname)
+          return vim.fs.dirname(
+            vim.fs.find({ "project.godot", ".git" }, { upward = true })[1]
+          ) or vim.fn.getcwd()
+        end,
+      })
+
+      lspconfig.gopls.setup({})
+
+      lspconfig.jsonls.setup({})
+
+      lspconfig.lua_ls.setup({
         settings = {
           Lua = {
 	           workspace = {
@@ -31,9 +48,10 @@ return {
           }
         }
       })
-      vim.lsp.enable("lua_ls")
-      vim.lsp.enable("pyright")
-      vim.lsp.config("ts_ls", {
+
+      lspconfig.pyright.setup({})
+
+      lspconfig.ts_ls.setup({
         filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
         init_options = {
           plugins = {
@@ -45,15 +63,14 @@ return {
           }
         }
       })
-      vim.lsp.enable("ts_ls")
-      vim.lsp.config("volar", {
+
+      lspconfig.volar.setup({
         init_options = {
           vue = {
             hybridMode = true,
           },
         },
       })
-      vim.lsp.enable("volar")
     end
   },
 }

@@ -4,12 +4,12 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
     local m = args.match
 
-    if m == "lua" or m == "json" or m == "vue" or m == "yaml" or m == "javascript" or m == "typescript" then
+    if m == "lua" or m == "json" or m == "typescript" or m == "typescriptreact" or m == "vue" or m == "yaml" or m == "graphql" then
       vim.opt.expandtab = true
       vim.opt.tabstop = 1
       vim.opt.shiftwidth = 2
       vim.opt.softtabstop = 2
-    elseif m == "gitconfig" or m == "go" or m == "make" then
+    elseif m == "gitconfig" or m == "go" or m == "make" or m == "gd" or m == "gdscript" or m == "gdshader" then
       vim.opt.tabstop = 4
     else
       vim.opt.expandtab = true
