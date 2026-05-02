@@ -1,35 +1,33 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  branch = "master",
+  branch = "main",
   build = ":TSUpdate",
   config = function()
-    require("nvim-treesitter.configs").setup {
-      ensure_installed = {
-        "c",
-        "gdscript",
-        "godot_resource",
-        "gdshader",
-        "gitignore",
-        "go",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "typescript",
-        "vue",
-      },
-      auto_install = true,
-      highlight = {
-        enable = true,
-        disable = function(lang, buf)
-          local max_filesize = 100 * 1024
-          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-          if ok and stats and stats.size > max_filesize then
-            return true
-          end
-        end,
-        additional_vim_regex_highlighting = false,
-      },
-    }
+    local tree = require("nvim-treesitter")
+
+    tree.setup({})
+    tree.install({
+      "c",
+      "gdscript",
+      "godot_resource",
+      "gdshader",
+      "gitignore",
+      "go",
+      "json",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "typescript",
+    })
+
+    local grp = vim.api.nvim_create_augroup("TreeSitterConfig", { clear = true })
+    vim.api.nvim_create_autocmd("FileType", {
+      group = grp,
+      callback = function(event)
+        if vim.list_contains(tree.get_installed(), vim.treesitter.language.get_lang(event.match)) then
+	         vim.treesitter.start(event.buf)
+        end
+      end,
+    })
   end,
 }
