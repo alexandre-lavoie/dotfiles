@@ -5,3 +5,4 @@ keybind = alt+left=previous_tab
 keybind = alt+right=next_tab
 keybind = alt+t=new_tab
 keybind = alt+q=close_tab
+keybind = ctrl+shift+f=unbind

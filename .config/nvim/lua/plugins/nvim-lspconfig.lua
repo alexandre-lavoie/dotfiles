@@ -16,12 +16,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
+      vim.lsp.config("clangd", {})
 
-      lspconfig.clangd.setup({})
-
-      lspconfig.gdscript.setup({
-        cmd = { "ncat", "localhost", "6005" },
+      vim.lsp.config("gdscript", {
+        cmd = { "nc", "localhost", "6005" },
         filetypes = { "gd", "gdscript" },
         on_attach = function(client, bufnr)
           vim.api.nvim_command('echo serverstart("/tmp/godot.pipe")')
@@ -33,11 +31,11 @@ return {
         end,
       })
 
-      lspconfig.gopls.setup({})
+      vim.lsp.config("gopls", {})
 
-      lspconfig.jsonls.setup({})
+      vim.lsp.config("jsonls", {})
 
-      lspconfig.lua_ls.setup({
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
 	           workspace = {
@@ -49,9 +47,9 @@ return {
         }
       })
 
-      lspconfig.pyright.setup({})
+      vim.lsp.config("pyright", {})
 
-      lspconfig.ts_ls.setup({
+      vim.lsp.config("ts_ls", {
         filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
         init_options = {
           plugins = {
@@ -64,7 +62,7 @@ return {
         }
       })
 
-      lspconfig.volar.setup({
+      vim.lsp.config("volar", {
         init_options = {
           vue = {
             hybridMode = true,
