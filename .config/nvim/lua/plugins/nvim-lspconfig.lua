@@ -1,22 +1,25 @@
 return {
   {
-    "mason-org/mason.nvim",
+    "mason-org/mason-lspconfig.nvim",
     opts = {
       ensure_installed = {
         "clangd",
         "gopls",
-        "json-lsp",
-        "lua-language-server",
+        "jsonls",
+        "lua_ls",
         "pyright",
-        "typescript-language-server",
-        "vue-language-server",
+        "ts_ls",
       },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
     },
   },
   {
     "neovim/nvim-lspconfig",
     config = function()
       vim.lsp.config("clangd", {})
+      vim.lsp.enable("clangd")
 
       vim.lsp.config("gdscript", {
         cmd = { "nc", "localhost", "6005" },
@@ -30,10 +33,13 @@ return {
           ) or vim.fn.getcwd()
         end,
       })
+      vim.lsp.enable("gdscript")
 
       vim.lsp.config("gopls", {})
+      vim.lsp.enable("gopls")
 
       vim.lsp.config("jsonls", {})
+      vim.lsp.enable("jsonls")
 
       vim.lsp.config("lua_ls", {
         settings = {
@@ -46,8 +52,10 @@ return {
           }
         }
       })
+      vim.lsp.enable("lua_ls")
 
       vim.lsp.config("pyright", {})
+      vim.lsp.enable("pyright")
 
       vim.lsp.config("ts_ls", {
         filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
@@ -61,14 +69,7 @@ return {
           }
         }
       })
-
-      vim.lsp.config("volar", {
-        init_options = {
-          vue = {
-            hybridMode = true,
-          },
-        },
-      })
+      vim.lsp.enable("ts_ls")
     end
   },
 }
