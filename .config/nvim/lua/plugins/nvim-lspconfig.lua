@@ -22,18 +22,26 @@ return {
       vim.lsp.enable("clangd")
 
       vim.lsp.config("gdscript", {
-        cmd = { "nc", "localhost", "6005" },
-        filetypes = { "gd", "gdscript" },
-        on_attach = function(client, bufnr)
-          vim.api.nvim_command('echo serverstart("/tmp/godot.pipe")')
-        end,
+        cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
+        filetypes = { "gdscript", "gdshader" },
         root_dir = function(fname)
           return vim.fs.dirname(
-            vim.fs.find({ "project.godot", ".git" }, { upward = true })[1]
+            vim.fs.find({ "project.godot", ".git" },
+              {
+                upward = true
+              }
+            )[1]
           ) or vim.fn.getcwd()
         end,
       })
       vim.lsp.enable("gdscript")
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "gdscript", "gdshader" },
+        callback = function(args)
+          vim.lsp.start(vim.lsp.config.gdscript)
+        end,
+      })
 
       vim.lsp.config("gopls", {})
       vim.lsp.enable("gopls")
