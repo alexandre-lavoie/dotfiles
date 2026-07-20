@@ -36,7 +36,17 @@ return {
     indent = { enabled = true },
     input = { enabled = true },
     lazygit = { enabled = true },
-    picker = { enabled = true },
+    picker = {
+      enabled = true,
+      win = {
+        input = {
+          keys = {
+            ["<C-Up>"] = { "history_back", mode = { "i", "n" } },
+            ["<C-Down>"] = { "history_forward", mode = { "i", "n" } },
+          },
+        },
+      }
+    },
     rename = { enabled = true },
     terminal = { enabled = true },
     words = {
