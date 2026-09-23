@@ -11,8 +11,21 @@ return {
 
     return {
       sources = {
-        null_ls.builtins.formatting.gofumpt,
-        null_ls.builtins.formatting.goimports,
+        null_ls.builtins.formatting.goimports.with({
+          extra_args = function(params)
+            local go_mod = vim.fs.find("go.mod", {
+              path = vim.fs.dirname(params.bufname),
+              upward = true,
+            })[1]
+            if not go_mod then
+              return {}
+            end
+
+            local module_line = vim.fn.readfile(go_mod, "", 1)[1]
+            local module = module_line and module_line:match("^module%s+(.+)%s*$")
+            return module and { "-local", module } or {}
+          end,
+        }),
       },
       on_attach = function(client, buffer)
         if client.supports_method("textDocument/implementation") or client.supports_method("textDocument/completion") then
@@ -40,7 +53,12 @@ return {
             group = lsp_format_group,
             buffer = buffer,
             callback = function()
-              vim.lsp.buf.format({ bufnr = buffer })
+              vim.lsp.buf.format({
+                bufnr = buffer,
+                filter = function(format_client)
+                  return format_client.name == "null-ls"
+                end,
+              })
             end,
           })
         end

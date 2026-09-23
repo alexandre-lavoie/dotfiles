@@ -1,8 +1,20 @@
+-- General
+
+vim.g.mapleader = " "
+
 -- Tools
 
 vim.keymap.set("n", "git", function() Snacks.lazygit.open() end, { noremap = true, desc = "Open LazyGit" })
 
-vim.keymap.set("n", "y#r", function()
+vim.keymap.set("n", "<leader>z", function()
+  require("gitsigns").reset_hunk()
+end, { desc = "Undo Git changes at cursor" })
+
+vim.keymap.set("v", "<leader>z", function()
+  require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+end, { desc = "Undo selected Git changes" })
+
+vim.keymap.set("n", "<leader>#r", function()
   local path = vim.fn.expand("%:.")
   if path == "" then
     vim.notify("Current buffer has no file path", vim.log.levels.WARN)
@@ -14,7 +26,7 @@ vim.keymap.set("n", "y#r", function()
   vim.notify("Yanked " .. location)
 end, { desc = "Yank relative path and line number" })
 
-vim.keymap.set("n", "y#a", function()
+vim.keymap.set("n", "<leader>#a", function()
   local path = vim.fn.expand("%:p")
   if path == "" then
     vim.notify("Current buffer has no file path", vim.log.levels.WARN)
@@ -25,13 +37,13 @@ vim.keymap.set("n", "y#a", function()
   vim.notify("Yanked " .. path)
 end, { desc = "Yank absolute path" })
 
-vim.keymap.set("n", "y#l", function()
+vim.keymap.set("n", "<leader>#l", function()
   local line = tostring(vim.fn.line("."))
   vim.fn.setreg("+", line)
   vim.notify("Yanked line " .. line)
 end, { desc = "Yank line number" })
 
-vim.keymap.set("n", "y#g", function()
+vim.keymap.set("n", "<leader>#g", function()
   local file = vim.api.nvim_buf_get_name(0)
   if file == "" then
     vim.notify("Current buffer has no file path", vim.log.levels.WARN)
@@ -81,10 +93,16 @@ vim.keymap.set("n", "y#g", function()
   vim.notify("Yanked " .. url)
 end, { desc = "Yank GitHub link for current line" })
 
+-- Search
+
+vim.keymap.set("n", "<leader>f", function() Snacks.picker.grep() end, { noremap = true, desc = "Search all files for text" })
+vim.keymap.set("n", "<leader>p", function() Snacks.picker.files({ hidden = true, ignored = true, follow = true }) end, { noremap = true, desc = "Search for a file" })
+vim.keymap.set("n", "<leader>g", function() Snacks.picker.pick("grit_search") end, { desc = "Search all files with GritQL" })
+
 -- Navigation
 
-vim.keymap.set("n", "<Space><Left>", "<C-o>", { noremap = true, desc = "Go to previous mark" })
-vim.keymap.set("n", "<Space><Right>", "<C-i>", { noremap = true, desc = "Go to next mark" })
-vim.keymap.set("n", "<Space><Up>", function() Snacks.picker.lsp_definitions() end, { noremap = true, desc = "Go up to definition" })
-vim.keymap.set("n", "<Space><Down>", function() Snacks.picker.lsp_references() end, { noremap = true, desc = "Go down to references" })
-vim.keymap.set("n", "<Space><Space><Down>", function() Snacks.picker.lsp_implementations() end, { noremap = true, desc = "Go down to implementations" })
+vim.keymap.set("n", "<leader><Left>", "<C-o>", { noremap = true, desc = "Go to previous mark" })
+vim.keymap.set("n", "<leader><Right>", "<C-i>", { noremap = true, desc = "Go to next mark" })
+vim.keymap.set("n", "<leader><Up>", function() Snacks.picker.lsp_definitions() end, { noremap = true, desc = "Go up to definition" })
+vim.keymap.set("n", "<leader><Down>", function() Snacks.picker.lsp_references() end, { noremap = true, desc = "Go down to references" })
+vim.keymap.set("n", "<leader><leader><Down>", function() Snacks.picker.lsp_implementations() end, { noremap = true, desc = "Go down to implementations" })

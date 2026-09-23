@@ -1,3 +1,18 @@
+local function decode_grit_event(line)
+  local ok, event = pcall(vim.json.decode, line)
+  if ok then
+    return event
+  end
+
+  ok, line = pcall(vim.json.decode, '"' .. line .. '"')
+  if ok then
+    ok, event = pcall(vim.json.decode, line)
+    if ok then
+      return event
+    end
+  end
+end
+
 return {
   "folke/snacks.nvim",
   priority = 1000,
@@ -41,11 +56,96 @@ return {
       win = {
         input = {
           keys = {
-            ["<C-Up>"] = { "history_back", mode = { "i", "n" } },
-            ["<C-Down>"] = { "history_forward", mode = { "i", "n" } },
+            ["<A-Up>"] = { "history_back", mode = { "i", "n" } },
+            ["<A-Down>"] = { "history_forward", mode = { "i", "n" } },
           },
         },
-      }
+      },
+      sources = {
+        grit_search = {
+          title = "Grit Search",
+          format = "file",
+          notify = false,
+          show_empty = true,
+          live = true,
+          supports_live = true,
+
+          finder = function(opts, ctx)
+            local query, extra_args = Snacks.picker.util.parse(ctx.filter.search)
+
+            local args = {
+              "apply",
+              "--jsonl",
+              "--cache",
+              "--dry-run",
+              query,
+            }
+
+            vim.list_extend(args, extra_args)
+
+            local grit_finder = require("snacks.picker.source.proc").proc({
+              cmd = "grit",
+              args = args,
+              cwd = opts.cwd,
+              notify = false,
+
+              transform = function(item)
+                local match = decode_grit_event(item.text)
+                if not match or match.__typename ~= "Match" or not match.sourceFile then
+                  return false
+                end
+
+                item.match = match
+              end,
+            }, ctx)
+
+            return function(emit)
+              local pending = 0
+
+              grit_finder(function(item)
+                pending = pending + 1
+
+                vim.schedule(function()
+                  local ok, err = pcall(function()
+                    local lines = vim.split(item.match.content, "\n", { plain = true })
+
+                    for _, range in ipairs(item.match.ranges or {}) do
+                      local line = lines[range.start.line]
+                      local positions = {}
+
+                      local last_col = range["end"].line == range.start.line and range["end"].column - 1 or #line
+                      for col = range.start.column, last_col do
+                        positions[#positions + 1] = col
+                      end
+
+                      emit({
+                        file = item.match.sourceFile:gsub("^%./", ""),
+                        pos = { range.start.line, range.start.column },
+                        line = line,
+                        positions = positions,
+                      })
+                    end
+                  end)
+
+                  if not ok then
+                    vim.notify(err, vim.log.levels.ERROR)
+                  end
+
+                  pending = pending - 1
+
+                  if pending == 0 then
+                    ctx.async:resume()
+                  end
+                end)
+              end)
+
+              if pending > 0 then
+                ctx.async:suspend()
+              end
+            end
+          end
+        },
+      },
     },
     rename = { enabled = true },
     terminal = { enabled = true },

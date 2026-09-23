@@ -43,7 +43,13 @@ return {
         end,
       })
 
-      vim.lsp.config("gopls", {})
+      vim.lsp.config("gopls", {
+        settings = {
+          gopls = {
+            buildFlags = { "-tags=integration,test,tools" },
+          },
+        },
+      })
       vim.lsp.enable("gopls")
 
       vim.lsp.config("jsonls", {})
