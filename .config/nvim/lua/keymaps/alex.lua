@@ -97,7 +97,7 @@ end, { desc = "Yank GitHub link for current line" })
 
 vim.keymap.set("n", "<leader>f", function() Snacks.picker.grep() end, { noremap = true, desc = "Search all files for text" })
 vim.keymap.set("n", "<leader>p", function() Snacks.picker.files({ hidden = true, ignored = true, follow = true }) end, { noremap = true, desc = "Search for a file" })
-vim.keymap.set("n", "<leader>g", function() Snacks.picker.pick("grit_search") end, { desc = "Search all files with GritQL" })
+vim.keymap.set("n", "<leader>g", function() Snacks.picker.pick("grit_search", { grit_ft = vim.bo.filetype }) end, { desc = "Search all files with GritQL" })
 
 -- Navigation
 

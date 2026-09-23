@@ -1,3 +1,34 @@
+local grit_lang = {
+  cs = "csharp",
+  css = "css",
+  elixir = "elixir",
+  go = "go",
+  hcl = "hcl",
+  html = "html",
+  java = "java",
+  javascript = "js",
+  javascriptreact = "js",
+  json = "json",
+  jsonc = "json",
+  jsx = "js",
+  kotlin = "kotlin",
+  markdown = "markdown",
+  php = "php",
+  python = "python",
+  ruby = "ruby",
+  rust = "rust",
+  solidity = "solidity",
+  sql = "sql",
+  terraform = "hcl",
+  toml = "toml",
+  tsx = "js",
+  typescript = "js",
+  typescriptreact = "js",
+  vue = "vue",
+  yaml = "yaml",
+  ["yaml.ansible"] = "yaml",
+}
+
 local function decode_grit_event(line)
   local ok, event = pcall(vim.json.decode, line)
   if ok then
@@ -82,6 +113,12 @@ return {
             }
 
             vim.list_extend(args, extra_args)
+
+            local lang = grit_lang[opts.grit_ft]
+            print(opts.grit_ft)
+            if lang then
+              vim.list_extend(args, { "--language", lang })
+            end
 
             local grit_finder = require("snacks.picker.source.proc").proc({
               cmd = "grit",
